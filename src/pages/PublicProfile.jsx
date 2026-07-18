@@ -32,6 +32,12 @@ export default function PublicProfile() {
   const [receipts, setReceipts] = useState([])
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
+  const [showContactForm, setShowContactForm] = useState(false)
+  const [employerName, setEmployerName] = useState('')
+  const [employerEmail, setEmployerEmail] = useState('')
+  const [message, setMessage] = useState('')
+  const [sending, setSending] = useState(false)
+  const [sent, setSent] = useState(false)
 
   useEffect(() => {
     const load = async () => {
@@ -100,7 +106,15 @@ export default function PublicProfile() {
         </div>
 
         <div className="mb-10">
-          <h1 className="text-3xl font-bold text-white mb-1">{fullName}</h1>
+          <div className="flex items-center justify-between flex-wrap gap-4 mb-1">
+            <h1 className="text-3xl font-bold text-white">{fullName}</h1>
+            <button
+              onClick={() => setShowContactForm(!showContactForm)}
+              className="bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold px-4 py-2 rounded-lg"
+            >
+              ✉️ Contact {fullName.split(' ')[0]}
+            </button>
+          </div>
           <div className="flex items-center gap-4 text-slate-400">
             <span>
               {receipts.length} skill receipt{receipts.length !== 1 ? 's' : ''}
@@ -108,8 +122,77 @@ export default function PublicProfile() {
             <span className="flex items-center gap-1 text-emerald-400">
               ✓ {confirmedReceipts.length} verified
             </span>
-            <span>{Object.keys(grouped).length} skill areas</span>
+           <span>{Object.keys(grouped).length} skill areas</span>
           </div>
+
+          {showContactForm && (
+            <div className="bg-slate-800 rounded-2xl p-6 mt-4">
+              {sent ? (
+                <div className="text-center py-4">
+                  <div className="text-emerald-400 text-3xl mb-2">✓</div>
+                  <p className="text-white font-medium">Message sent!</p>
+                  <p className="text-slate-400 text-sm mt-1">
+                    {fullName.split(' ')[0]} will see your request and can reach back out to you.
+                  </p>
+                </div>
+              ) : (
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault()
+                    setSending(true)
+                    await supabase.from('contact_requests').insert({
+                      worker_id: userId,
+                      employer_name: employerName,
+                      employer_email: employerEmail,
+                      message: message,
+                    })
+                    setSending(false)
+                    setSent(true)
+                  }}
+                  className="space-y-4"
+                >
+                  <div>
+                    <label className="block text-sm text-slate-300 mb-1">Your name</label>
+                    <input
+                      type="text"
+                      required
+                      value={employerName}
+                      onChange={(e) => setEmployerName(e.target.value)}
+                      className="w-full rounded-lg bg-slate-700 text-white px-4 py-2 outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-slate-300 mb-1">Your email</label>
+                    <input
+                      type="email"
+                      required
+                      value={employerEmail}
+                      onChange={(e) => setEmployerEmail(e.target.value)}
+                      className="w-full rounded-lg bg-slate-700 text-white px-4 py-2 outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-slate-300 mb-1">Message</label>
+                    <textarea
+                      required
+                      rows={3}
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      placeholder="Describe the work you need done..."
+                      className="w-full rounded-lg bg-slate-700 text-white px-4 py-2 outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={sending}
+                    className="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-5 py-2 rounded-lg transition disabled:opacity-50"
+                  >
+                    {sending ? 'Sending...' : 'Send message'}
+                  </button>
+                </form>
+              )}
+            </div>
+          )}
         </div>
 
         {receipts.length === 0 && (

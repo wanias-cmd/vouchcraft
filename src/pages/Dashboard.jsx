@@ -14,6 +14,7 @@ export default function Dashboard() {
   const [photoFile, setPhotoFile] = useState(null)
 const [uploading, setUploading] = useState(false)
   const [loadingList, setLoadingList] = useState(true)
+  const [contactRequests, setContactRequests] = useState([])
 
   const fetchReceipts = async () => {
     setLoadingList(true)
@@ -26,11 +27,21 @@ const [uploading, setUploading] = useState(false)
     setReceipts(data || [])
     setLoadingList(false)
   }
+  const fetchContactRequests = async () => {
+    const { data } = await supabase
+      .from('contact_requests')
+      .select('*')
+      .eq('worker_id', user.id)
+      .order('created_at', { ascending: false })
+    setContactRequests(data || [])
+  }
 
   useEffect(() => {
-    if (user) fetchReceipts()
+    if (user) {
+      fetchReceipts()
+      fetchContactRequests()
+    }
   }, [user])
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitting(true)
@@ -167,6 +178,29 @@ const { data: inserted, error: insertError } = await supabase
             >
               Copy
             </button>
+          </div>
+        </div>
+      )}
+       {contactRequests.length > 0 && (
+        <div className="mb-10">
+          <h2 className="text-lg font-semibold text-white mb-4">
+            📬 Contact Requests ({contactRequests.length})
+          </h2>
+          <div className="space-y-3">
+            {contactRequests.map((c) => (
+              <div key={c.id} className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
+                <div className="flex justify-between items-start mb-2">
+                  <p className="text-white font-medium">{c.employer_name}</p>
+                  <a
+                    href={`mailto:${c.employer_email}`}
+                    className="text-blue-400 text-sm hover:underline"
+                  >
+                    {c.employer_email}
+                  </a>
+                </div>
+                <p className="text-slate-300 text-sm">{c.message}</p>
+              </div>
+            ))}
           </div>
         </div>
       )}
