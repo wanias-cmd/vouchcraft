@@ -10,6 +10,7 @@ export default function Dashboard() {
   const [voucherName, setVoucherName] = useState('')
   const [voucherRelationship, setVoucherRelationship] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [lastCreatedId, setLastCreatedId] = useState(null)
   const [loadingList, setLoadingList] = useState(true)
 
   const fetchReceipts = async () => {
@@ -32,17 +33,26 @@ export default function Dashboard() {
     e.preventDefault()
     setSubmitting(true)
 
-    const { skill, category } = translateSkill(description)
 
-    await supabase.from('skill_receipts').insert({
-      user_id: user.id,
-      raw_description: description,
-      voucher_name: voucherName,
-      voucher_relationship: voucherRelationship,
-      translated_skill: skill,
-      category: category,
-      confidence_score: 1,
-    })
+   const { skill, category } = translateSkill(description)
+const { data: inserted, error: insertError } = await supabase
+      .from('skill_receipts')
+      .insert({
+        user_id: user.id,
+        raw_description: description,
+        voucher_name: voucherName,
+        voucher_relationship: voucherRelationship,
+        translated_skill: skill,
+        category: category,
+        confidence_score: 1,
+      })
+      .select()
+      .single()
+
+    console.log('insert result:', inserted)
+    console.log('insert error:', insertError)
+
+    if (inserted) setLastCreatedId(inserted.id)
 
     setDescription('')
     setVoucherName('')
@@ -105,7 +115,29 @@ export default function Dashboard() {
           {submitting ? 'Saving...' : 'Add Skill Receipt'}
         </button>
       </form>
-
+{lastCreatedId && (
+        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-5 mb-8">
+          <p className="text-blue-400 font-medium mb-2">
+            📨 Send this link to {voucherName || 'your voucher'} to confirm it really happened:
+          </p>
+          <div className="flex gap-2">
+            <input
+              readOnly
+              value={`${window.location.origin}/confirm/${lastCreatedId}`}
+              className="flex-1 bg-slate-900 text-slate-300 text-sm px-3 py-2 rounded-lg"
+              onClick={(e) => e.target.select()}
+            />
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(`${window.location.origin}/confirm/${lastCreatedId}`)
+              }}
+              className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-4 py-2 rounded-lg"
+            >
+              Copy
+            </button>
+          </div>
+        </div>
+      )}
       <div className="space-y-4">
         {loadingList && <p className="text-slate-400">Loading your receipts...</p>}
         {!loadingList && receipts.length === 0 && (
