@@ -22,10 +22,14 @@ export function AuthProvider({ children }) {
 
   const signUp = (email, password) => supabase.auth.signUp({ email, password })
   const signIn = (email, password) => supabase.auth.signInWithPassword({ email, password })
+  const signInWithGoogle = () =>
+    supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}/dashboard` },
+    })
   const signOut = () => supabase.auth.signOut()
-
-  return (
-    <AuthContext.Provider value={{ user, loading, signUp, signIn, signOut }}>
+return (
+    <AuthContext.Provider value={{ user, loading, signUp, signIn, signOut, signInWithGoogle }}>
       {children}
     </AuthContext.Provider>
   )
