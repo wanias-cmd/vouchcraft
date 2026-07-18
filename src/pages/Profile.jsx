@@ -75,7 +75,18 @@ export default function Profile() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
       <div className="mb-10">
-        <h1 className="text-3xl font-bold text-white mb-1">{fullName}</h1>
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <h1 className="text-3xl font-bold text-white mb-1">{fullName}</h1>
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(`${window.location.origin}/u/${user.id}`)
+              alert('Public profile link copied! Share it with recruiters.')
+            }}
+            className="bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm px-4 py-2 rounded-lg border border-slate-700"
+          >
+            🔗 Copy public profile link
+          </button>
+        </div>
         <p className="text-slate-400">
           {receipts.length} verified skill receipt{receipts.length !== 1 ? 's' : ''} across{' '}
           {Object.keys(grouped).length} skill area{Object.keys(grouped).length !== 1 ? 's' : ''}

@@ -7,6 +7,7 @@ import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
 import Confirm from './pages/Confirm'
+import PublicProfile from './pages/PublicProfile'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/confirm/:receiptId" element={<Confirm />} />
+        <Route path="/u/:userId" element={<PublicProfile />} />
         <Route
           path="/dashboard"
           element={
