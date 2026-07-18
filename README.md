@@ -40,13 +40,16 @@ competencies — building a visual, trustable skill profile over time.
 | 🔄 **Bureaucracy Translator** | Converts casual descriptions ("fixed the wifi") into enterprise-recognizable competencies ("Network Infrastructure & Hardware Troubleshooting") |
 | 🤝 **Community Vouching** | Every skill receipt is tied to the person who witnessed it — accountability without formal references |
 | 🗺️ **Skill Canvas** | A visual, color-coded profile grouping verified skills by category, so an employer can assess breadth at a glance |
+| 🔗 **Public Verified Profiles** | Every user gets a shareable public link (`/u/:id`) — recruiters can view a fully verified skill profile without needing an account |
 
 ## 🧱 Tech Stack
 
-- **Frontend:** React + Vite
+- **Frontend:** React + Vite (JavaScript)
 - **Styling:** Tailwind CSS
+- **Animation:** Framer Motion
 - **Backend:** Supabase (Auth + Postgres, Row Level Security)
 - **Routing:** React Router
+- **Deployment:** Vercel
 
 ## ⚙️ How It Works
 
