@@ -66,7 +66,7 @@ competencies — building a visual, trustable skill profile over time.
 
 ## 🌐 Live Demo
 
-**[your deployed link here]**
+**vouchcraft.vercel.app**
 
 ## 💻 Local Setup
 
