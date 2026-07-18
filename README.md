@@ -42,6 +42,8 @@ competencies — building a visual, trustable skill profile over time.
 | 🗺️ **Skill Canvas** | A visual, color-coded profile grouping verified skills by category, so an employer can assess breadth at a glance |
 | 🔗 **Public Verified Profiles** | Every user gets a shareable public link (`/u/:id`) — recruiters can view a fully verified skill profile without needing an account |
 | 💼 **Employer View** | Employers describe a task in plain language and get matched to verified workers with relevant skill areas — no job posting or resume screening required |
+| 📸 **Photo Proof** | Users can attach a photo to any Skill Receipt as visual evidence of completed work |
+| ✉️ **Privacy-Respecting Contact Requests** | Employers can message a worker directly from their public profile without ever seeing their email — the worker receives the request privately in their dashboard |
 | 🔐 **Google Sign-In** | One-click authentication alongside email/password, lowering the barrier to entry for users |
 
 ## 🧱 Tech Stack
@@ -56,10 +58,11 @@ competencies — building a visual, trustable skill profile over time.
 ## ⚙️ How It Works
 
 **For workers:**
-1. Sign up and log a **Skill Receipt** describing real work you did, in plain language
+1. Sign up and log a **Skill Receipt** describing real work you did, in plain language — optionally attach a photo as proof
 2. The **Bureaucracy Translator** instantly converts it into a structured, employer-readable competency
 3. Send the built-in confirmation link to the person who witnessed the work — they confirm it with one click, no account needed
 4. Confirmed work shows a **✓ Verified** badge; your public **Skill Canvas** (`/u/your-id`) is shareable with anyone, no login required
+5. Employers can message you directly from your public profile — requests land privately in your dashboard, your email stays hidden
 
 **For employers:**
 1. Visit **Employer View** and describe what you need done, in plain language
@@ -69,9 +72,9 @@ competencies — building a visual, trustable skill profile over time.
 ## 🔭 Roadmap (Beyond the Hackathon)
 
 - [ ] Replace the rules-based translator with an LLM for open-ended matching
-- [ ] Photo/screenshot upload as proof-of-work evidence per receipt
 - [ ] Weighted credibility scoring — verified users' endorsements carry more weight
 - [ ] Cryptographically signed vouches for tamper-evident verification
+- [ ] Require vouchers to verify their own identity before confirming, to prevent link misuse
 
 ## 🌐 Live Demo
 
