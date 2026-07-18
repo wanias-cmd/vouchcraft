@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
 import Confirm from './pages/Confirm'
 import PublicProfile from './pages/PublicProfile'
+import EmployerView from './pages/EmployerView'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/confirm/:receiptId" element={<Confirm />} />
         <Route path="/u/:userId" element={<PublicProfile />} />
+        <Route path="/employer" element={<EmployerView />} />
         <Route
           path="/dashboard"
           element={

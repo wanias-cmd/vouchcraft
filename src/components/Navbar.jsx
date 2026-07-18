@@ -15,6 +15,9 @@ export default function Navbar() {
       <Link to="/" className="text-white font-bold text-xl">
         Vouch<span className="text-emerald-400">craft</span>
       </Link>
+      <Link to="/employer" className="text-slate-400 hover:text-white text-sm hidden md:block">
+        For Employers
+      </Link>
       <div className="flex items-center gap-4">
         {user ? (
           <>

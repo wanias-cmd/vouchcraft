@@ -60,3 +60,17 @@ export function translateSkill(rawText) {
     category: 'General Technical Skill',
   }
 }
+// Returns ALL matching categories for a job description (not just the first match)
+export function getMatchingCategories(jobText) {
+  const text = jobText.toLowerCase()
+  const matched = new Set()
+
+  for (const rule of RULES) {
+    const isMatch = rule.keywords.some((kw) => text.includes(kw))
+    if (isMatch) {
+      matched.add(rule.category)
+    }
+  }
+
+  return Array.from(matched)
+}
