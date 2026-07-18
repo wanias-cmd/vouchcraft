@@ -41,24 +41,30 @@ competencies — building a visual, trustable skill profile over time.
 | 🤝 **Community Vouching** | Every skill receipt is tied to the person who witnessed it — accountability without formal references |
 | 🗺️ **Skill Canvas** | A visual, color-coded profile grouping verified skills by category, so an employer can assess breadth at a glance |
 | 🔗 **Public Verified Profiles** | Every user gets a shareable public link (`/u/:id`) — recruiters can view a fully verified skill profile without needing an account |
+| 💼 **Employer View** | Employers describe a task in plain language and get matched to verified workers with relevant skill areas — no job posting or resume screening required |
+| 🔐 **Google Sign-In** | One-click authentication alongside email/password, lowering the barrier to entry for users |
 
 ## 🧱 Tech Stack
 
 - **Frontend:** React + Vite (JavaScript)
 - **Styling:** Tailwind CSS
 - **Animation:** Framer Motion
-- **Backend:** Supabase (Auth + Postgres, Row Level Security)
+- **Backend:** Supabase (Auth + Postgres, Row Level Security, Google OAuth)
 - **Routing:** React Router
 - **Deployment:** Vercel
 
 ## ⚙️ How It Works
 
-1. A user signs up and logs a **Skill Receipt** describing real work they did
-2. They name who can vouch for it and their relationship to them
-3. The **Bureaucracy Translator** matches the description against a
-   competency map and assigns a structured skill + category
-4. Their public profile displays all receipts as a color-coded
-   **Skill Canvas**, grouped by category
+**For workers:**
+1. Sign up and log a **Skill Receipt** describing real work you did, in plain language
+2. The **Bureaucracy Translator** instantly converts it into a structured, employer-readable competency
+3. Send the built-in confirmation link to the person who witnessed the work — they confirm it with one click, no account needed
+4. Confirmed work shows a **✓ Verified** badge; your public **Skill Canvas** (`/u/your-id`) is shareable with anyone, no login required
+
+**For employers:**
+1. Visit **Employer View** and describe what you need done, in plain language
+2. Vouchcraft matches your request against verified workers' skill areas
+3. Browse ranked results and view each candidate's full verified profile
 
 ## 🔭 Roadmap (Beyond the Hackathon)
 
@@ -76,7 +82,7 @@ competencies — building a visual, trustable skill profile over time.
 > Only needed if you want to run this yourself — judges can use the live demo above.
 
 ```bash
-git clone [your repo link]
+git clone https://github.com/wanias-cmd/vouchcraft
 cd vouchcraft
 npm install
 ```
@@ -89,11 +95,11 @@ Then run:
 npm run dev
 ```
 
-## 👥 Team (Solo)
+## 👥 Team 
 
-[Wania Sheeba]
+[Wania Sheeba] (Solo)
 
 ## 🏆 Built For
 
-[Buildbyte] — Challenge: *"Build a digital solution that empowers
+Buildbyte — Challenge: *"Build a digital solution that empowers
 students, young professionals, or communities through technology"*
