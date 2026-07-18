@@ -49,9 +49,7 @@ const { data: inserted, error: insertError } = await supabase
       .select()
       .single()
 
-    console.log('insert result:', inserted)
-    console.log('insert error:', insertError)
-
+  
     if (inserted) setLastCreatedId(inserted.id)
 
     setDescription('')
@@ -143,9 +141,20 @@ const { data: inserted, error: insertError } = await supabase
         {!loadingList && receipts.length === 0 && (
           <p className="text-slate-400">No skill receipts yet — add your first one above.</p>
         )}
-      {receipts.map((r) => (
+ {receipts.map((r) => (
           <div key={r.id} className="bg-slate-800 rounded-xl p-5">
-            <p className="text-slate-400 text-sm mb-1">You said:</p>
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-slate-400 text-sm">You said:</p>
+              {r.status === 'confirmed' ? (
+                <span className="flex items-center gap-1 bg-emerald-500/10 text-emerald-400 text-xs font-semibold px-2.5 py-1 rounded-full">
+                  ✓ Verified
+                </span>
+              ) : (
+                <span className="flex items-center gap-1 bg-amber-500/10 text-amber-400 text-xs font-semibold px-2.5 py-1 rounded-full">
+                  ⏳ Pending confirmation
+                </span>
+              )}
+            </div>
             <p className="text-white mb-3">{r.raw_description}</p>
 
             {r.translated_skill && (

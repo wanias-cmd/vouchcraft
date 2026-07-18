@@ -109,10 +109,25 @@ export default function Profile() {
                     key={r.id}
                     className={`rounded-xl border p-5 hover:scale-[1.02] transition-transform ${COLOR_CLASSES[color]}`}
                   >
-                    <p className="font-semibold mb-2">{r.translated_skill}</p>
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="font-semibold">{r.translated_skill}</p>
+                      {r.status === 'confirmed' ? (
+                        <span className="text-emerald-400 text-xs font-semibold whitespace-nowrap ml-2">
+                          ✓ Verified
+                        </span>
+                      ) : (
+                        <span className="text-amber-400 text-xs font-semibold whitespace-nowrap ml-2">
+                          ⏳ Pending
+                        </span>
+                      )}
+                    </div>
                     <p className="text-slate-400 text-sm mb-3">{r.raw_description}</p>
                     <div className="flex items-center gap-2 text-xs text-slate-500">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full ${
+                          r.status === 'confirmed' ? 'bg-emerald-400' : 'bg-amber-400'
+                        }`}
+                      />
                       Vouched by {r.voucher_name || 'Not specified'}
                       {r.voucher_relationship && ` · ${r.voucher_relationship}`}
                     </div>
