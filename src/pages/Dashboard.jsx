@@ -11,6 +11,8 @@ export default function Dashboard() {
   const [voucherRelationship, setVoucherRelationship] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [lastCreatedId, setLastCreatedId] = useState(null)
+  const [photoFile, setPhotoFile] = useState(null)
+const [uploading, setUploading] = useState(false)
   const [loadingList, setLoadingList] = useState(true)
 
   const fetchReceipts = async () => {
@@ -33,8 +35,27 @@ export default function Dashboard() {
     e.preventDefault()
     setSubmitting(true)
 
+    let photoUrl = null
 
-   const { skill, category } = translateSkill(description)
+    if (photoFile) {
+      setUploading(true)
+      const fileExt = photoFile.name.split('.').pop()
+      const filePath = `${user.id}/${Date.now()}.${fileExt}`
+
+      const { error: uploadError } = await supabase.storage
+        .from('receipt-photos')
+        .upload(filePath, photoFile)
+
+      if (!uploadError) {
+        const { data: urlData } = supabase.storage
+          .from('receipt-photos')
+          .getPublicUrl(filePath)
+        photoUrl = urlData.publicUrl
+      }
+      setUploading(false)
+    }
+
+    const { skill, category } = translateSkill(description)
 const { data: inserted, error: insertError } = await supabase
       .from('skill_receipts')
       .insert({
@@ -45,16 +66,17 @@ const { data: inserted, error: insertError } = await supabase
         translated_skill: skill,
         category: category,
         confidence_score: 1,
+        photo_url: photoUrl,
       })
       .select()
       .single()
 
-  
     if (inserted) setLastCreatedId(inserted.id)
 
     setDescription('')
     setVoucherName('')
     setVoucherRelationship('')
+    setPhotoFile(null)
     setSubmitting(false)
     fetchReceipts()
   }
@@ -83,6 +105,18 @@ const { data: inserted, error: insertError } = await supabase
             className="w-full rounded-lg bg-slate-700 text-white px-4 py-2 outline-none focus:ring-2 focus:ring-emerald-500"
           />
         </div>
+        <div>
+          <label className="block text-sm text-slate-300 mb-1">
+            Photo proof (optional)
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setPhotoFile(e.target.files[0])}
+            className="w-full text-slate-300 text-sm file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-slate-700 file:text-white file:text-sm hover:file:bg-slate-600"
+          />
+        </div>
+
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm text-slate-300 mb-1">Who can vouch for this?</label>
@@ -105,12 +139,12 @@ const { data: inserted, error: insertError } = await supabase
             />
           </div>
         </div>
-        <button
+      <button
           type="submit"
           disabled={submitting}
           className="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-5 py-2 rounded-lg transition disabled:opacity-50"
         >
-          {submitting ? 'Saving...' : 'Add Skill Receipt'}
+          {uploading ? 'Uploading photo...' : submitting ? 'Saving...' : 'Add Skill Receipt'}
         </button>
       </form>
 {lastCreatedId && (
@@ -155,7 +189,15 @@ const { data: inserted, error: insertError } = await supabase
                 </span>
               )}
             </div>
-            <p className="text-white mb-3">{r.raw_description}</p>
+          <p className="text-white mb-3">{r.raw_description}</p>
+
+            {r.photo_url && (
+              <img
+                src={r.photo_url}
+                alt="Proof of work"
+                className="rounded-lg mb-3 max-h-48 object-cover w-full"
+              />
+            )}
 
             {r.translated_skill && (
               <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-4 py-2 mb-3">

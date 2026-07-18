@@ -153,6 +153,13 @@ export default function PublicProfile() {
                           </span>
                         )}
                       </div>
+                     {r.photo_url && (
+                        <img
+                          src={r.photo_url}
+                          alt="Proof of work"
+                          className="rounded-lg mb-3 max-h-40 object-cover w-full"
+                        />
+                      )}
                       <p className="text-slate-400 text-sm mb-3">{r.raw_description}</p>
                       <div className="flex items-center gap-2 text-xs text-slate-500">
                         <span
