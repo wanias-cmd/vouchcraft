@@ -1,10 +1,28 @@
 import { Link } from 'react-router-dom'
+import DotField from '../components/DotField'
 
 export default function Landing() {
   return (
     <div className="bg-slate-900">
       {/* Hero section */}
-      <section className="max-w-5xl mx-auto px-6 pt-20 pb-24 text-center">
+     <section className="relative max-w-5xl mx-auto px-6 pt-20 pb-24 text-center overflow-hidden">
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+          <DotField
+            dotRadius={1.5}
+            dotSpacing={14}
+            bulgeStrength={67}
+            glowRadius={160}
+            sparkle={false}
+            waveAmplitude={0}
+            cursorRadius={500}
+            cursorForce={0.1}
+            bulgeOnly
+            gradientFrom="#10b981"
+            gradientTo="#0f172a"
+            glowColor="#0f172a"
+          />
+        </div>
+        <div className="relative" style={{ zIndex: 1 }}>
         <div className="inline-block bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm px-4 py-1.5 rounded-full mb-6">
           No degree required. No formal paperwork required. Just proof.
         </div>
@@ -34,6 +52,7 @@ export default function Landing() {
           >
             Log in
           </Link>
+      </div>
         </div>
       </section>
 
